@@ -11,7 +11,8 @@ def gethtml(url):
 
         with urllib.request.urlopen(url) as response:
             html = response.read()
-            tree = BeautifulSoup(html, "html.parser")
+            tree = BeautifulSoup(html, "lxml")
+            [x.extract() for x in tree.find_all(['script','style'])]
             goodhtml = tree.prettify()
             return goodhtml
 

@@ -16,7 +16,7 @@ class TestMethods(unittest.TestCase):
         self.assertFalse(isvalidurl('https://travis-ci.!!.org/'))
 
     def test_gethtml(self):
-        html = gethtml('https://travis-ci.org/')
+        html = gethtml('https://www.google.com/')
         count = len(html)
         self.assertTrue(count > 0)
 
