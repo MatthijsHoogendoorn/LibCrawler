@@ -1,17 +1,17 @@
 "htmlrequesthandler.py"
 
-import requests
 import re
+import requests
 from bs4 import BeautifulSoup
 
-def gethtml(url):
+def getHtml(url):
     "Gets html based on url"
 
-    if isvalidurl(url):
+    if isValidUrl(url):
         res = requests.get(url)
         html = res.text
         tree = BeautifulSoup(html, "lxml")
-        [x.extract() for x in tree.find_all(['script','style'])]
+        [x.extract() for x in tree.find_all(['script', 'style'])]
         goodhtml = tree.prettify()
         return goodhtml
 
@@ -19,7 +19,7 @@ def gethtml(url):
 
 
 
-def isvalidurl(url):
+def isValidUrl(url):
     "Checks if the given url is valid"
 
     result = re.match(r'^(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$', url)
