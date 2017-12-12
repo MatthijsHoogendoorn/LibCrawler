@@ -1,4 +1,5 @@
 "test_crawler.py"
+
 import os
 import sys
 
@@ -6,19 +7,19 @@ currentdir = os.path.dirname(os.path.abspath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from libcrawler.htmlrequesthandler import gethtml
+from libcrawler.htmlrequesthandler import getHtml
 from libcrawler.crawler import Crawler
 
 import unittest
 
 
-class CrawlerTestMethods(unittest.TestCase):
+class CrawlerTests(unittest.TestCase):
     "Test methods for the Crawler class."
 
     def test_getFirstByContentContains(self):
         "Test method for getFirstByContentContains."
 
-        html = gethtml('https://travis-ci.org/')
+        html = getHtml('https://travis-ci.org/')
 
         cra = Crawler(html)
         searchcontent = 'Travis'
@@ -29,7 +30,7 @@ class CrawlerTestMethods(unittest.TestCase):
     def test_getFirstByRegex(self):
         "Test method for getFirstByRegex."
 
-        html = gethtml('https://travis-ci.org/')
+        html = getHtml('https://travis-ci.org/')
 
         cra = Crawler(html)
         regex = r'(?<=Travis )CI'
@@ -39,7 +40,7 @@ class CrawlerTestMethods(unittest.TestCase):
     def test_getLastByContentContains(self):
         "Test method for getLastByContentContains."
 
-        html = gethtml('https://travis-ci.org/')
+        html = getHtml('https://travis-ci.org/')
 
         cra = Crawler(html)
         searchcontent = 'Travis'
@@ -50,7 +51,7 @@ class CrawlerTestMethods(unittest.TestCase):
     def test_getLastByRegex(self):
         "Test method for getLastByRegex."
 
-        html = gethtml('https://travis-ci.org/')
+        html = getHtml('https://travis-ci.org/')
 
         cra = Crawler(html)
         regex = r'(?<=Please enable JavaScript to get the best )Travis CI'
@@ -60,7 +61,7 @@ class CrawlerTestMethods(unittest.TestCase):
     def test_getAllByContentContains(self):
         "Test method for getAllByContentContains."
 
-        html = gethtml('https://travis-ci.org/')
+        html = getHtml('https://travis-ci.org/')
 
         cra = Crawler(html)
         searchcontent = 'Travis'
@@ -71,7 +72,7 @@ class CrawlerTestMethods(unittest.TestCase):
     def test_getAllByRegex(self):
         "Test method for getAllByRegex."
 
-        html = gethtml('https://travis-ci.org/')
+        html = getHtml('https://travis-ci.org/')
 
         cra = Crawler(html)
         regex = r'(?<=Travis )CI'

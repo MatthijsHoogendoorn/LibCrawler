@@ -1,22 +1,30 @@
-import os, sys, inspect
+"test_htmlrequesthandler.py"
+
+import os
+import sys
 
 currentdir = os.path.dirname(os.path.abspath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from libcrawler.htmlrequesthandler import gethtml, isvalidurl
+from libcrawler.htmlrequesthandler import getHtml, isValidUrl
 
 import unittest
 
-class TestMethods(unittest.TestCase):
+class HtmlRequestHandlerTests(unittest.TestCase):
+    "Test methods for the HtmlRequestHandler."
 
-    def test_isvalidurl(self):
-        self.assertTrue(isvalidurl('https://www.google.com/'))
-        self.assertTrue(isvalidurl('https://travis-ci.org/'))
-        self.assertFalse(isvalidurl('https://travis-ci.!!.org/'))
+    def test_isValidUrl(self):
+        "Test for isValidUrl."
 
-    def test_gethtml(self):
-        html = gethtml('https://www.google.com/')
+        self.assertTrue(isValidUrl('https://www.google.com/'))
+        self.assertTrue(isValidUrl('https://travis-ci.org/'))
+        self.assertFalse(isValidUrl('https://travis-ci.!!.org/'))
+
+    def test_getHtml(self):
+        "Test for getHtml."
+
+        html = getHtml('https://www.google.com/')
         count = len(html)
         self.assertTrue(count > 0)
 

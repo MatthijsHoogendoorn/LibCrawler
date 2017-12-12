@@ -1,10 +1,12 @@
-from lxml import html, etree
+"htmltoxmlconverter.py"
+
+from lxml import html
 from lxml.etree import tostring
 
 
-def converttoxml(htmlinput):
+def convertToXml(htmlinput):
     "Converts the given html to xml"
-        
+
     count = len(str(htmlinput))
     if count > 0:
         doc = html.fromstring(htmlinput)

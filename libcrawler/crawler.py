@@ -2,7 +2,7 @@
 
 import re
 import xml.etree.ElementTree as ET
-from libcrawler.htmltoxmlconverter import converttoxml
+from libcrawler.htmltoxmlconverter import convertToXml
 
 
 class Crawler:
@@ -13,7 +13,7 @@ class Crawler:
     xml = ''
 
     def __init__(self, html):
-        self.xml = converttoxml(html)
+        self.xml = convertToXml(html)
         self.rootnode = ET.fromstring(self.xml)
 
     def getFirstByContentContains(self, target):

@@ -1,24 +1,27 @@
-import os, sys, inspect
+"test_htmltoxmlconverter.py"
+
+import os
+import sys
 
 currentdir = os.path.dirname(os.path.abspath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from libcrawler.htmltoxmlconverter import converttoxml
-from libcrawler.htmlrequesthandler import gethtml
+from libcrawler.htmltoxmlconverter import convertToXml
+from libcrawler.htmlrequesthandler import getHtml
 
 import unittest
 
-class TestMethods(unittest.TestCase):
+class htmlToXmlConverterTests(unittest.TestCase):
+    "Test methods for the HtmlToXmlConverter."
 
-    def test_converttoxml(self):
+    def test_convertToXml(self):
+        "Test for convertToXml."
 
-        html = gethtml('https://www.google.com/')
+        html = getHtml('https://www.google.com/')
         count1 = len(html)
-        xml = converttoxml(html)
+        xml = convertToXml(html)
         count2 = len(xml)
-        print('Length of html = ' + str(count1))
-        print('Length of xml = ' + str(count2))
 
         self.assertTrue(count1 != count2)
 
