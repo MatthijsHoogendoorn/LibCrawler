@@ -22,8 +22,8 @@ class CrawlerTests(unittest.TestCase):
         html = getHtml('https://travis-ci.org/')
 
         cra = Crawler(html)
-        searchcontent = 'Travis'
-        found, content = cra.getFirstByContentContains(searchcontent)
+        searchcontent = 'mascot'
+        found, content = cra.getFirstByContentContains(searchcontent, True)
         self.assertTrue(
             found is True and content is not None and searchcontent in content)
 
@@ -34,7 +34,7 @@ class CrawlerTests(unittest.TestCase):
 
         cra = Crawler(html)
         regex = r'(?<=Travis )CI'
-        found, content = cra.getFirstByRegex(regex)
+        found, content = cra.getFirstByRegex(regex, True)
         self.assertTrue(found is True and content is not None)
 
     def test_getLastByContentContains(self):
@@ -45,7 +45,7 @@ class CrawlerTests(unittest.TestCase):
         cra = Crawler(html)
         searchcontent = 'Travis'
         expectedcontent = 'Please enable JavaScript to get the best Travis CI experience.'
-        found, content = cra.getLastByContentContains(searchcontent)
+        found, content = cra.getLastByContentContains(searchcontent, False)
         self.assertTrue(found is True and expectedcontent in content)
 
     def test_getLastByRegex(self):
@@ -55,7 +55,7 @@ class CrawlerTests(unittest.TestCase):
 
         cra = Crawler(html)
         regex = r'(?<=Please enable JavaScript to get the best )Travis CI'
-        found, content = cra.getLastByRegex(regex)
+        found, content = cra.getLastByRegex(regex, False)
         self.assertTrue(found is True and content is not None)
 
     def test_getAllByContentContains(self):
@@ -65,7 +65,7 @@ class CrawlerTests(unittest.TestCase):
 
         cra = Crawler(html)
         searchcontent = 'Travis'
-        hits = cra.getAllByContentContains(searchcontent)
+        hits = cra.getAllByContentContains(searchcontent, False)
         count = len(hits)
         self.assertTrue(count == 3)
 
@@ -76,7 +76,7 @@ class CrawlerTests(unittest.TestCase):
 
         cra = Crawler(html)
         regex = r'(?<=Travis )CI'
-        hits = cra.getAllByRegex(regex)
+        hits = cra.getAllByRegex(regex, False)
         count = len(hits)
         self.assertTrue(count == 3)
 
