@@ -41,9 +41,9 @@ class SearcherTests(unittest.TestCase):
         searcher = Searcher()
         searcher.setUrl('https://travis-ci.org/')
 
-        foundfirst, firsthit = searcher.searchFor('Travis', 1, False)
-        foundlast, lasthit = searcher.searchFor('Travis', 2, False)
-        foundall, allhits = searcher.searchFor('Travis', 3, False)
+        foundfirst, firsthit = searcher.searchFor('mascot', 1, False, True)
+        foundlast, lasthit = searcher.searchFor('Travis', 2, False, False)
+        foundall, allhits = searcher.searchFor('Travis', 3, False, False)
 
         counthits = len(allhits)
 
@@ -55,9 +55,9 @@ class SearcherTests(unittest.TestCase):
         self.assertTrue(allhits is not None)
         self.assertTrue(allhits[counthits - 1] == lasthit)
 
-        foundfirstregex, firstregexhit = searcher.searchFor(r'(?<=Travis )CI - Test', 1, True)
-        foundlastregex, lastregexhit = searcher.searchFor(r'(?<=get the best Travis )CI', 2, True)
-        foundallregex, allregexhits = searcher.searchFor(r'(?<=Travis )CI', 3, True)
+        foundfirstregex, firstregexhit = searcher.searchFor(r'(?<=Travis )CI - Test', 1, True, False)
+        foundlastregex, lastregexhit = searcher.searchFor(r'(?<=get the best Travis )CI', 2, True, False)
+        foundallregex, allregexhits = searcher.searchFor(r'(?<=Travis )CI', 3, True, False)
 
         countregexhits = len(allregexhits)
 

@@ -30,7 +30,7 @@ class Searcher:
 
         return False
 
-    def searchFor(self, data, searchOptions, isRegex):
+    def searchFor(self, data, searchOptions, isRegex, isDeepSearch):
         """Search for data on the web page of the set url.
         Provide a string for data.
 
@@ -41,6 +41,8 @@ class Searcher:
 
         Provide True for isRegex when the string
         for data is a regular expression.
+
+        Provide True for isDeepSearch if element attributes need to be searched.
         This function will return True/False and any found hit(s)."""
 
         if (self.isUrlSet()) and (data is not None):
@@ -49,25 +51,25 @@ class Searcher:
 
                 if searchOptions == 1:
                     if isRegex:
-                        return self.crawler.getFirstByRegex(data)
+                        return self.crawler.getFirstByRegex(data, isDeepSearch)
                     else:
-                        return self.crawler.getFirstByContentContains(data)
+                        return self.crawler.getFirstByContentContains(data, isDeepSearch)
 
                 elif searchOptions == 2:
                     if isRegex:
-                        return self.crawler.getLastByRegex(data)
+                        return self.crawler.getLastByRegex(data, isDeepSearch)
                     else:
-                        return self.crawler.getLastByContentContains(data)
+                        return self.crawler.getLastByContentContains(data, isDeepSearch)
 
                 elif searchOptions == 3:
                     if isRegex:
-                        listhits = self.crawler.getAllByRegex(data)
+                        listhits = self.crawler.getAllByRegex(data, isDeepSearch)
                         if listhits is not None:
                             count = len(listhits)
                             if count > 0:
                                 return True, listhits
                     else:
-                        listhits = self.crawler.getAllByContentContains(data)
+                        listhits = self.crawler.getAllByContentContains(data, isDeepSearch)
                         if listhits is not None:
                             count = len(listhits)
                             if count > 0:
