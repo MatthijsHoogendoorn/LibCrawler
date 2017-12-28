@@ -1,7 +1,7 @@
 "crawler.py"
 
 import re
-from lxml import etree as ET2
+from lxml import etree as ET
 from libcrawler.htmltoxmlconverter import convertToXml
 
 
@@ -11,10 +11,11 @@ class Crawler:
 
     rootnode = None
     xml = ''
+    foundtargets = {}
 
     def __init__(self, html):
         self.xml = convertToXml(html)
-        self.rootnode = ET2.fromstring(self.xml)
+        self.rootnode = ET.fromstring(self.xml)
 
     def getFirstByContentContains(self, target, deepsearch):
         """Search for the given target
@@ -36,27 +37,101 @@ class Crawler:
 
         return self.getFirstRec(regex, self.rootnode, True, deepsearch)
 
+    def getFirstAfter(self, target, aftertarget, isregex, deepsearch):
+        """Recursively search for the given target in the xml tree
+        and return the first hit after the given aftertarget.
+        Pass True for deepsearch if attributes also need to be searched."""
+
+        if (target is not None) and (len(target)) and (aftertarget is not None) and (len(aftertarget)):
+            if aftertarget in self.foundtargets:
+
+                node = self.foundtargets[aftertarget]
+                if node is not None:
+
+                    targetfound, foundtarget = self.getFirstByContentContains(
+                        target, deepsearch)
+
+                    if targetfound:
+                        return targetfound, foundtarget
+
+                    parent = node.getparent()
+                    if parent is not None:
+
+                        while targetfound is False:
+
+                            childcount = len(list(parent))
+                            if parent[childcount - 1] != node:
+
+                                for index in range(parent.index(node), childcount):
+                                    targetfound, foundtarget = self.getFirstRec(
+                                        target, parent[index], isregex, deepsearch)
+
+                                if targetfound:
+                                    break
+                                else:
+                                    node = parent
+                                    parent = node.getparent()
+
+                    return targetfound, foundtarget
+
+    def getFirstBefore(self, target, beforetarget, isregex, deepsearch):
+        """Recursively search for the given target in the xml tree
+        and return the first hit before the given aftertarget.
+        Pass True for deepsearch if attributes also need to be searched."""
+
+        if (target is not None) and (len(target)) and (beforetarget is not None) and (len(beforetarget)):
+            if beforetarget in self.foundtargets:
+
+                node = self.foundtargets[beforetarget]
+                if node is not None:
+
+                    targetfound = False
+                    foundtarget = ''
+
+                    parent = node.getparent()
+                    if parent is not None:
+
+                        while targetfound is False:
+
+                            if parent[0] != node:
+
+                                for index in range(0, parent.index(node)):
+                                    targetfound, foundtarget = self.getFirstRec(
+                                        target, parent[index], isregex, deepsearch)
+
+                                if targetfound:
+                                    break
+
+                            node = parent
+                            parent = node.getparent()
+
+                    return targetfound, foundtarget
+
     def getFirstRec(self, target, node, isregex, isdeepsearch):
         """Recursively search for the given target in the xml tree
-        and return the first hit. Pass True for deepsearch 
+        and return the first hit. Pass True for deepsearch
         if attributes also need to be searched."""
 
         if node.text is not None:
             if len(node.text) >= len(target):
                 if isregex:
-                    match = re.search(target, node.text)
+                    match = re.search(target, node.text.strip())
                     if match:
-                        return True, node.text
-                elif target in node.text:
-                    return True, node.text
+                        self.foundtargets[node.text.strip()] = node
+                        return True, node.text.strip()
+                elif target in node.text.strip():
+                    self.foundtargets[node.text.strip()] = node
+                    return True, node.text.strip()
         elif (node.items() is not None) and (len(node.items())) and isdeepsearch:
-            for name, value in node.items():
+            for _, value in node.items():
                 if len(value) >= len(target):
                     if isregex:
                         match = re.search(target, value)
                         if match:
+                            self.foundtargets[value] = node
                             return True, value
                     elif target in value:
+                        self.foundtargets[value] = node
                         return True, value
 
         if len(node):
@@ -124,19 +199,19 @@ class Crawler:
 
     def getAllRec(self, target, node, isregex, isdeepsearch, currentlist):
         """Recursively search for the target in the xml tree
-        and return all hits in a list. Pass True for isdeepsearch 
+        and return all hits in a list. Pass True for isdeepsearch
         if attributes also need to be searched."""
 
         if node.text is not None:
             if len(node.text) >= len(target):
                 if isregex:
-                    match = re.search(target, node.text)
+                    match = re.search(target, node.text.strip())
                     if match:
-                        currentlist.append(node.text)
-                elif target in node.text:
-                    currentlist.append(node.text)
+                        currentlist.append(node.text.strip())
+                elif target in node.text.strip():
+                    currentlist.append(node.text.strip())
         elif (node.items() is not None) and (len(node.items())) and isdeepsearch:
-            for name, value in node.items():
+            for _, value in node.items():
                 if value >= target:
                     if isregex:
                         match = re.search(target, value)

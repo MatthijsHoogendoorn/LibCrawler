@@ -37,6 +37,31 @@ class CrawlerTests(unittest.TestCase):
         found, content = cra.getFirstByRegex(regex, True)
         self.assertTrue(found is True and content is not None)
 
+    def test_getFirstAfter(self):
+        "Test method for getFirstAfter."
+
+        html = getHtml('https://travis-ci.org/')
+
+        cra = Crawler(html)
+        regex = r'(?<=Travis )CI'
+        _, foundtarget = cra.getFirstByRegex(regex, True)
+        targetfound, secondtarget = cra.getFirstAfter(regex, foundtarget, True, False)
+        self.assertTrue(targetfound is True and secondtarget is not None)
+
+    def test_getFirstBefore(self):
+        "Test method for getFirstBefore."
+
+        html = getHtml('https://travis-ci.org/')
+
+        cra = Crawler(html)
+        regex = r'(?<=Travis )CI'
+        found, foundtarget = cra.getFirstByRegex(regex, True)
+        secondtargetfound, secondtarget = cra.getFirstAfter(regex, foundtarget, True, False)
+        thirdtargetfound, thirdtarget = cra.getFirstBefore(regex, secondtarget, True, False)
+
+        self.assertTrue(found is True and secondtargetfound is True and thirdtargetfound is True)
+        self.assertTrue(thirdtarget == foundtarget)
+
     def test_getLastByContentContains(self):
         "Test method for getLastByContentContains."
 
