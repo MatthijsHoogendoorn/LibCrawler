@@ -68,9 +68,8 @@ class Crawler:
 
                                 if targetfound:
                                     break
-                                else:
-                                    node = parent
-                                    parent = node.getparent()
+                            node = parent
+                            parent = node.getparent()
 
                     return targetfound, foundtarget
 
